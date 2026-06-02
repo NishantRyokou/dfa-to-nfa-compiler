@@ -1,0 +1,167 @@
+╔════════════════════════════════════════════════════════════════════╗
+║         DFA to NFA Compiler - Quick Start Guide                    ║
+╚════════════════════════════════════════════════════════════════════╝
+
+PROJECT: Compiler design using Flex and Bison
+STATUS: All files created, ready to build
+LOCATION: C:\Users\legam\Documents\btech\assignment\toc
+
+════════════════════════════════════════════════════════════════════
+
+WHAT'S IN THE BOX:
+
+✓ Complete Flex lexical analyzer (tokenizer)
+✓ Complete Bison syntax analyzer (parser)  
+✓ DFA & NFA data structures
+✓ DFA to NFA conversion algorithm
+✓ Sample test input file
+✓ Build scripts (Makefile, batch, PowerShell)
+✓ Documentation & guides
+
+════════════════════════════════════════════════════════════════════
+
+3-STEP SETUP:
+
+1. INSTALL TOOLS (One-time, 10 minutes)
+   
+   Option A (Easiest): MSYS2
+   - Download: https://www.msys2.org/
+   - Run installer
+   - Open MSYS2 terminal
+   - Run: pacman -Syuu
+   - Run: pacman -S base-devel flex bison mingw-w64-x86_64-gcc mingw-w64-x86_64-make
+   
+   Option B: Ubuntu WSL (Windows 10/11)
+   - Follow SETUP_WINDOWS.md instructions
+
+2. BUILD THE PROJECT
+   
+   In MSYS2 or terminal:
+   cd /c/Users/legam/Documents/btech/assignment/toc
+   make
+
+3. RUN THE PROGRAM
+   
+   ./dfa_converter < tests/test_input.dfa
+
+════════════════════════════════════════════════════════════════════
+
+FILE STRUCTURE:
+
+toc/
+├── src/
+│   ├── dfa.h, dfa.c           ← DFA module
+│   ├── nfa.h, nfa.c           ← NFA module
+│   ├── converter.h, converter.c ← Converter
+│   ├── lexer.l                ← Flex scanner
+│   ├── parser.y               ← Bison parser
+│   └── main.c                 ← Entry point
+├── tests/
+│   └── test_input.dfa         ← Sample input
+├── Makefile                   ← Build config
+├── build.bat                  ← Windows batch build
+├── build.ps1                  ← PowerShell build
+├── README.md                  ← Full documentation
+├── SETUP_WINDOWS.md           ← Setup guide
+├── INSTALL.md                 ← Install instructions
+└── PROJECT_STATUS.md          ← Detailed status
+
+════════════════════════════════════════════════════════════════════
+
+BUILD OPTIONS:
+
+After installing tools, use ONE of these:
+
+OPTION 1 - Using Make (recommended):
+  make                          # Build
+  make clean                    # Clean build artifacts
+  make run                      # Build and run
+  ./dfa_converter < tests/test_input.dfa  # Manual run
+
+OPTION 2 - Using batch script:
+  build.bat
+
+OPTION 3 - Using PowerShell:
+  powershell -ExecutionPolicy Bypass -File build.ps1
+
+════════════════════════════════════════════════════════════════════
+
+EXPECTED OUTPUT:
+
+DFA to NFA Converter
+Using Flex and Bison
+===================
+
+DFA parsed successfully
+
+Parsed DFA:
+=== DFA ===
+States: q0 q1 q2
+Alphabet: a b
+Initial State: q0
+Final States: q2
+Transitions:
+  q0 --(a)--> q1
+  q1 --(b)--> q2
+  q2 --(a)--> q1
+
+Converted NFA:
+=== NFA ===
+States: q0 q1 q2
+Alphabet: a b
+Initial State: q0
+Final States: q2
+Transitions:
+  q0 --(a)--> q1
+  q1 --(b)--> q2
+  q2 --(a)--> q1
+
+════════════════════════════════════════════════════════════════════
+
+TROUBLESHOOTING:
+
+Problem: "make: command not found"
+→ Install make using MSYS2 or build.ps1
+
+Problem: "flex: command not found"  
+→ In MSYS2: pacman -S flex
+
+Problem: "bison: command not found"
+→ In MSYS2: pacman -S bison
+
+Problem: Compilation errors
+→ Run: make clean && make
+
+════════════════════════════════════════════════════════════════════
+
+INPUT FORMAT:
+
+Edit tests/test_input.dfa to try different DFA specifications:
+
+DFA {
+  states: q0, q1, q2
+  alphabet: a, b
+  initial: q0
+  finals: q2
+  transitions:
+    q0 --a--> q1
+    q1 --b--> q2
+    q2 --a--> q1
+}
+
+════════════════════════════════════════════════════════════════════
+
+DOCUMENTATION:
+
+- README.md: Project overview
+- SETUP_WINDOWS.md: Detailed setup instructions
+- INSTALL.md: Installation guide
+- PROJECT_STATUS.md: Complete project details
+
+════════════════════════════════════════════════════════════════════
+
+Ready to go! Install the tools and run: make
+
+Questions? See SETUP_WINDOWS.md and PROJECT_STATUS.md
+
+════════════════════════════════════════════════════════════════════

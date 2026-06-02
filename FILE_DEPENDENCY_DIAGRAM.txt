@@ -1,0 +1,327 @@
+═══════════════════════════════════════════════════════════════════════════════
+                    FILE DEPENDENCY DIAGRAM
+              Visual Guide to Which Files Are Important
+═══════════════════════════════════════════════════════════════════════════════
+
+
+📊 SCENARIO 1: JUST WANT TO RUN THE PROGRAM
+═══════════════════════════════════════════════════════════════════════════════
+
+┌─────────────────────────────────────────────────────────────────┐
+│                                                                 │
+│                  RUN THE PROGRAM                                │
+│                                                                 │
+│  User runs:  $ ./dfa_converter                                  │
+│                                                                 │
+│              Requires:                                          │
+│              ├─ dfa_converter.exe  ← ✓ ESSENTIAL               │
+│              └─ tests/dfa_examples.txt  ← ✓ ESSENTIAL          │
+│                                                                 │
+│              Optional:                                          │
+│              └─ README.md (for instructions)                    │
+│                                                                 │
+│  Result: Program runs, interactive menu appears                │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+
+
+📊 SCENARIO 2: BUILD FROM SOURCE
+═══════════════════════════════════════════════════════════════════════════════
+
+┌─────────────────────────────────────────────────────────────────┐
+│                                                                 │
+│              BUILD THE PROJECT                                  │
+│                                                                 │
+│  User runs:  $ make clean && make                               │
+│                                                                 │
+│              Makefile ─────┐                                    │
+│                            ├─→ Calls Flex ─→ Tokenizer         │
+│                            ├─→ Calls Bison → Parser            │
+│                            └─→ Calls GCC → Compiler            │
+│                                                                 │
+│  Source Files Required:                                         │
+│  ├─ src/dfa.h              ← ✓ ESSENTIAL                        │
+│  ├─ src/dfa.c              ← ✓ ESSENTIAL                        │
+│  ├─ src/nfa.h              ← ✓ ESSENTIAL                        │
+│  ├─ src/nfa.c              ← ✓ ESSENTIAL                        │
+│  ├─ src/converter.h        ← ✓ ESSENTIAL                        │
+│  ├─ src/converter.c        ← ✓ ESSENTIAL                        │
+│  ├─ src/lexer.l            ← ✓ ESSENTIAL (Flex input)           │
+│  ├─ src/parser.y           ← ✓ ESSENTIAL (Bison input)         │
+│  ├─ src/main.c             ← ✓ ESSENTIAL                        │
+│  └─ src/tokens.h           ← ✓ ESSENTIAL (Header)              │
+│                                                                 │
+│  Build Tools Required:                                          │
+│  ├─ gcc (C compiler)                                            │
+│  ├─ flex (Lexical Analyzer)                                     │
+│  ├─ bison (Parser Generator)                                    │
+│  └─ make (Build automation)                                     │
+│                                                                 │
+│  Result: dfa_converter.exe created (~45 KB)                     │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+
+
+📊 SCENARIO 3: UNDERSTAND/REVIEW THE CODE
+═══════════════════════════════════════════════════════════════════════════════
+
+┌─────────────────────────────────────────────────────────────────┐
+│                                                                 │
+│          REVIEW SOURCE CODE                                     │
+│                                                                 │
+│  Files to Read:                                                 │
+│  ├─ src/dfa.h, src/dfa.c          ← DFA structures & funcs     │
+│  ├─ src/nfa.h, src/nfa.c          ← NFA structures & funcs     │
+│  ├─ src/lexer.l                   ← Tokenizer (Flex)           │
+│  ├─ src/parser.y                  ← Parser (Bison)            │
+│  ├─ src/converter.c               ← Conversion logic           │
+│  ├─ src/main.c                    ← Main program              │
+│  └─ README.md, FINAL_REPORT.md    ← Documentation             │
+│                                                                 │
+│  Dependencies Between Modules:                                  │
+│  ┌──────────────────────────────────────────────────┐          │
+│  │  main.c                                          │          │
+│  │   ├─→ Calls: parser (yyparse)                    │          │
+│  │   │           converter (convert_dfa_to_nfa)     │          │
+│  │   │           dfa functions                      │          │
+│  │   └─→ Calls: nfa functions                       │          │
+│  │                                                  │          │
+│  │  parser.y (Bison)                                │          │
+│  │   ├─→ Calls: lexer (generated from lexer.l)      │          │
+│  │   └─→ Calls: dfa functions (semantic actions)    │          │
+│  │                                                  │          │
+│  │  lexer.l (Flex)                                  │          │
+│  │   ├─→ Generates: lex.yy.c (tokenizer)            │          │
+│  │   └─→ Returns: tokens to parser                  │          │
+│  │                                                  │          │
+│  │  converter.c                                     │          │
+│  │   ├─→ Takes: DFA structure                       │          │
+│  │   └─→ Creates: NFA structure                     │          │
+│  └──────────────────────────────────────────────────┘          │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+
+
+📊 COMPLETE DEPENDENCY TREE
+═══════════════════════════════════════════════════════════════════════════════
+
+                              USER RUNS
+                              $ ./dfa_converter
+                                   │
+                    ┌──────────────┴──────────────┐
+                    │                             │
+            dfa_converter.exe          tests/dfa_examples.txt
+            (Compiled code)            (Test data)
+                    │
+         ┌──────────┼──────────┐
+         │          │          │
+      STAGE 1    STAGE 2    STAGE 3       STAGE 4
+    LEXICAL    SYNTAX    SEMANTIC      CONVERSION
+    ANALYSIS   ANALYSIS   ANALYSIS
+         │          │          │            │
+    lex.yy.c   parser.yy.c   dfa.*       nfa.c
+    (Flex)     (Bison)       (code)      (code)
+         │          │          │
+    Tokenizes  Parses      Creates DFA  Creates NFA
+    input      tokens                   from DFA
+         │
+    Returns:
+    Tokens
+    stream
+
+
+📊 SOURCE FILES ORGANIZATION
+═══════════════════════════════════════════════════════════════════════════════
+
+src/
+│
+├─ HEADERS (Interface definitions)
+│  ├─ dfa.h ..................... DFA structures & function signatures
+│  ├─ nfa.h ..................... NFA structures & function signatures
+│  ├─ converter.h ............... Converter function signature
+│  └─ tokens.h .................. Token definitions
+│
+├─ IMPLEMENTATIONS (Code)
+│  ├─ dfa.c ..................... DFA functions (optimized)
+│  ├─ nfa.c ..................... NFA functions (optimized)
+│  ├─ converter.c ............... Conversion algorithm
+│  └─ main.c .................... Main program with menu
+│
+├─ COMPILER SPECIFICATIONS
+│  ├─ lexer.l ................... Flex specification (tokenizer)
+│  └─ parser.y .................. Bison specification (parser)
+│
+└─ GENERATED (Created by Flex/Bison, not in src/ originally)
+   ├─ lex.yy.c .................. Generated tokenizer code
+   ├─ parser.tab.c .............. Generated parser code
+   └─ parser.tab.h .............. Generated parser header
+
+
+📊 COMPILATION PROCESS
+═══════════════════════════════════════════════════════════════════════════════
+
+Step 1: Generate Lexer & Parser
+  ┌────────────────────────────────────────────┐
+  │ Flex: lexer.l → lex.yy.c                   │
+  │ Bison: parser.y → parser.tab.c, .tab.h     │
+  └────────────────────────────────────────────┘
+
+Step 2: Compile C files to Object files
+  ┌────────────────────────────────────────────┐
+  │ dfa.c → dfa.o                              │
+  │ nfa.c → nfa.o                              │
+  │ converter.c → converter.o                  │
+  │ main.c → main.o                            │
+  │ lex.yy.c → lex.yy.o                        │
+  │ parser.tab.c → parser.tab.o                │
+  └────────────────────────────────────────────┘
+
+Step 3: Link Object files
+  ┌────────────────────────────────────────────┐
+  │ Link all .o files → dfa_converter.exe      │
+  └────────────────────────────────────────────┘
+
+
+📊 RUNTIME FLOW
+═══════════════════════════════════════════════════════════════════════════════
+
+┌─────────────────────────────────────────────────────────────────┐
+│                    PROGRAM STARTS                               │
+│            (dfa_converter.exe executed)                          │
+└──────────────────────────┬──────────────────────────────────────┘
+                           │
+         ┌─────────────────┴─────────────────┐
+         │                                   │
+    main() in main.c              Read tests/dfa_examples.txt
+         │                               │
+         ├─→ load_examples()  ◄──────────┘
+         │
+         ├─→ display_examples()
+         │
+         ├─→ Get user input
+         │
+         ├─→ Create empty DFA ──→ dfa.c: create_dfa()
+         │
+         ├─→ yyparse()
+         │   │
+         │   ├─→ Flex (lexer) ─────→ Tokenizes input
+         │   │      lex.yy.c
+         │   │
+         │   └─→ Bison (parser) ───→ Parses tokens
+         │          parser.tab.c
+         │
+         │          During parsing, semantic actions call:
+         │          ├─→ dfa.c: add_state()
+         │          ├─→ dfa.c: add_symbol()
+         │          └─→ dfa.c: add_transition()
+         │
+         ├─→ print_dfa() ────────→ Display parsed DFA
+         │
+         ├─→ convert_dfa_to_nfa() ─→ converter.c
+         │   │
+         │   └─→ nfa.c: add_nfa_state()
+         │       nfa.c: add_nfa_transition()
+         │
+         ├─→ print_nfa() ────────→ Display converted NFA
+         │
+         └─→ Cleanup:
+             dfa.c: free_dfa()
+             nfa.c: free_nfa()
+             main.c: cleanup_examples()
+
+
+📊 WHICH FILES TO MODIFY FOR DIFFERENT TASKS
+═══════════════════════════════════════════════════════════════════════════════
+
+TASK: Change DFA limit (max states)
+  Modify:
+    ├─ src/dfa.h ................ Change capacity constants
+    ├─ src/dfa.c ................ Update allocation logic
+    └─ Rebuild: make clean && make
+
+TASK: Add new automata examples
+  Modify:
+    ├─ tests/dfa_examples.txt ... Add more examples
+    └─ No rebuild needed! Just update file
+
+TASK: Change input format for DFA
+  Modify:
+    ├─ src/lexer.l .............. Add new tokens
+    ├─ src/parser.y ............. Update grammar
+    ├─ src/main.c ............... Update parsing logic
+    └─ Rebuild: make clean && make
+
+TASK: Change display format
+  Modify:
+    ├─ src/dfa.c: print_dfa() ... Change output format
+    ├─ src/nfa.c: print_nfa() ... Change output format
+    └─ Rebuild: make clean && make
+
+TASK: Add epsilon transitions
+  Modify:
+    ├─ src/nfa.h ................ Add epsilon field
+    ├─ src/nfa.c ................ Handle epsilon transitions
+    ├─ src/converter.c .......... Add epsilon conversion logic
+    └─ Rebuild: make clean && make
+
+
+📊 FILE SIZES & RELATIONSHIPS
+═══════════════════════════════════════════════════════════════════════════════
+
+       File            Size      Depends On              Used By
+       ──────────────────────────────────────────────────────────────
+dfa.h           1 KB    (none)                  dfa.c, main.c, converter.c
+dfa.c           7 KB    dfa.h                   Makefile → main.exe
+nfa.h           1.5 KB  dfa.h                   nfa.c, main.c, converter.c
+nfa.c           7 KB    nfa.h                   Makefile → main.exe
+converter.h     0.5 KB  dfa.h, nfa.h            converter.c, main.c
+converter.c     1 KB    converter.h, dfa.h, nfa.h    Makefile → main.exe
+lexer.l         3 KB    (none)                  Makefile (Flex) → lex.yy.c
+parser.y        2 KB    tokens.h                Makefile (Bison) → parser.tab.c
+tokens.h        0.5 KB  (none)                  parser.y, main.c
+main.c          5 KB    All headers             Makefile → main.exe
+
+
+═══════════════════════════════════════════════════════════════════════════════
+QUICK REFERENCE: WHAT DO YOU NEED FOR...
+═══════════════════════════════════════════════════════════════════════════════
+
+... TO RUN?
+  Answer: Just 2 files!
+    1. dfa_converter.exe
+    2. tests/dfa_examples.txt
+
+... TO BUILD?
+  Answer: 9 source files + Makefile + tools
+    Build files:
+      - Makefile
+      - src/*.h (4 files)
+      - src/*.c (5 files)
+      - src/*.l
+      - src/*.y
+    Tools:
+      - gcc, flex, bison, make
+
+... TO UNDERSTAND?
+  Answer: 9 source files + documentation
+    - All files in src/
+    - README.md
+    - FINAL_REPORT.md
+    - OPTIMIZATION_CHANGES.md
+
+... TO MODIFY?
+  Answer: Source files + build tools
+    - Edit: src/*.c, src/*.h, src/*.l, src/*.y
+    - Rebuild: make clean && make
+    - Test: ./dfa_converter
+
+... TO SUBMIT?
+  Answer: Everything except exe and obj/
+    - src/ folder
+    - tests/ folder
+    - Makefile
+    - *.md files
+    - MS Word document
+
+═══════════════════════════════════════════════════════════════════════════════
+

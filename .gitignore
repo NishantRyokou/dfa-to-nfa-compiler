@@ -1,0 +1,37 @@
+# Build artifacts
+obj/
+*.o
+*.exe
+*.a
+*.so
+*.out
+
+# Generated files from Flex and Bison
+lex.yy.c
+lex.yy.h
+parser.tab.c
+parser.tab.h
+parser.output
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Windows specific
+*.dll
+*.lib
+Makefile.bak
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+
+# dfa_converter specific
+dfa_converter
+dfa_input.tmp

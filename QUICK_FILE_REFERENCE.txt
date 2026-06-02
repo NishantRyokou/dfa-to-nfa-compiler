@@ -1,0 +1,407 @@
+═══════════════════════════════════════════════════════════════════════════════
+                    QUICK FILE REFERENCE GUIDE
+                       What Files Do What?
+═══════════════════════════════════════════════════════════════════════════════
+
+
+⚡ ULTRA QUICK ANSWER:
+═══════════════════════════════════════════════════════════════════════════════
+
+JUST WANT TO RUN?
+  → dfa_converter.exe + tests/dfa_examples.txt
+
+WANT TO BUILD?
+  → ALL 9 src files + Makefile
+
+WANT TO UNDERSTAND?
+  → ALL 9 src files + README.md + FINAL_REPORT.md
+
+WANT TO MODIFY?
+  → Edit src files + make clean && make
+
+
+═══════════════════════════════════════════════════════════════════════════════
+CORE PROJECT FILES (9 ESSENTIAL SOURCE FILES)
+═══════════════════════════════════════════════════════════════════════════════
+
+1️⃣  dfa.h (1 KB)
+    What: DFA data structure definitions
+    Contains: typedef struct DFA { ... };
+    Provides: DFA* create_dfa(), void add_state(), void add_symbol(), etc.
+    Why: Defines what a DFA is in memory
+
+2️⃣  dfa.c (7 KB)
+    What: Implementation of DFA functions
+    Implements: Memory allocation, dynamic arrays, string interning
+    Optimization: Dynamic allocation, string pooling
+    Why: All DFA logic is here
+
+3️⃣  nfa.h (1.5 KB)
+    What: NFA data structure definitions
+    Contains: typedef struct NFA { ... };
+    Provides: NFA* create_nfa(), void add_nfa_state(), etc.
+    Why: Defines what an NFA is in memory
+
+4️⃣  nfa.c (7 KB)
+    What: Implementation of NFA functions
+    Implements: Multi-target transitions, proper cleanup
+    Optimization: Dynamic arrays, string pooling, proper free()
+    Why: All NFA logic is here
+
+5️⃣  lexer.l (3 KB)
+    What: Flex specification for tokenizer
+    Purpose: Breaks text input into tokens
+    Example: "q0" → IDENT token, "a" → SYMBOL token
+    Why: First stage of compilation (Lexical Analysis)
+
+6️⃣  parser.y (2 KB)
+    What: Bison specification for parser
+    Purpose: Parses tokens according to grammar
+    Calls: add_state(), add_symbol() as it parses
+    Why: Second stage of compilation (Syntax Analysis)
+
+7️⃣  converter.h (0.5 KB)
+    What: Header for DFA to NFA converter
+    Provides: NFA* convert_dfa_to_nfa(DFA* dfa);
+    Why: Interface to conversion function
+
+8️⃣  converter.c (1 KB)
+    What: DFA to NFA conversion algorithm
+    Logic: Copy states, symbols, transitions to NFA
+    Purpose: Convert DFA representation to NFA representation
+    Why: Core algorithm
+
+9️⃣  main.c (5 KB)
+    What: Main program with user interface
+    Features:
+      - Load 10 examples from file
+      - Display interactive menu
+      - Parse selected DFA
+      - Convert to NFA
+      - Display results
+    Why: User interacts with this
+
+
+═══════════════════════════════════════════════════════════════════════════════
+DATA & BUILD FILES
+═══════════════════════════════════════════════════════════════════════════════
+
+tests/dfa_examples.txt (2 KB)
+  What: 10 test DFA examples
+  Used by: main.c (loaded at startup)
+  Format: DFA specifications
+  Why: Provides test input data
+
+Makefile (1 KB)
+  What: Build configuration
+  Commands: make, make clean, make run
+  Tools called: flex, bison, gcc, ld
+  Why: Tells computer how to compile
+
+src/tokens.h (0.5 KB)
+  What: Token type definitions
+  Used by: parser.y and lexer.l
+  Why: Defines what tokens are available
+
+
+═══════════════════════════════════════════════════════════════════════════════
+EXECUTABLE & BUILD ARTIFACTS
+═══════════════════════════════════════════════════════════════════════════════
+
+dfa_converter.exe (45 KB)
+  What: Compiled executable
+  Created by: Makefile build process
+  Run with: ./dfa_converter
+  Contains: All compiled source code
+
+obj/ folder
+  What: Build artifacts (auto-generated)
+  Created by: make process
+  Contains: *.o files (object files)
+  Can delete: Yes (rebuild will recreate)
+  Purpose: Intermediate build files
+
+
+═══════════════════════════════════════════════════════════════════════════════
+FILES BY PURPOSE
+═══════════════════════════════════════════════════════════════════════════════
+
+COMPILATION PHASES:
+
+Phase 1 - Lexical Analysis:
+  Source: lexer.l (Flex specification)
+  Generated: lex.yy.c (Tokenizer code)
+  Purpose: Break input into tokens
+
+Phase 2 - Syntax Analysis:
+  Source: parser.y (Bison specification)
+  Generated: parser.tab.c, parser.tab.h (Parser code)
+  Purpose: Parse tokens into DFA structure
+
+Phase 3 - Semantic Analysis:
+  Source: dfa.c (with add_state, add_symbol, etc.)
+  Purpose: Build DFA in memory during parsing
+
+Phase 4 - Conversion:
+  Source: converter.c
+  Purpose: Convert DFA to NFA
+
+
+MODULE ORGANIZATION:
+
+DFA Module:
+  - dfa.h ..................... Data structure
+  - dfa.c ..................... Implementation
+  Purpose: Handle DFA objects
+
+NFA Module:
+  - nfa.h ..................... Data structure
+  - nfa.c ..................... Implementation
+  Purpose: Handle NFA objects
+
+Conversion Module:
+  - converter.h ............... Interface
+  - converter.c ............... Algorithm
+  Purpose: Convert between formats
+
+Main Module:
+  - main.c .................... User interface
+  Purpose: Interactive program
+
+
+═══════════════════════════════════════════════════════════════════════════════
+FILES GROUPED BY IMPORTANCE
+═══════════════════════════════════════════════════════════════════════════════
+
+CRITICAL (CANNOT WORK WITHOUT):
+  1. dfa.h, dfa.c (DFA core)
+  2. nfa.h, nfa.c (NFA core)
+  3. parser.y (syntax rules)
+  4. lexer.l (tokenization)
+  5. converter.c (conversion)
+  6. main.c (user interface)
+
+VERY IMPORTANT:
+  7. tokens.h (token definitions)
+  8. converter.h (interface)
+  9. Makefile (build config)
+
+IMPORTANT:
+  10. tests/dfa_examples.txt (test data)
+
+NICE TO HAVE:
+  11. Documentation (*.md files)
+  12. Build scripts (build.bat, build.ps1)
+
+
+═══════════════════════════════════════════════════════════════════════════════
+SIZE BREAKDOWN
+═══════════════════════════════════════════════════════════════════════════════
+
+Source Code:
+  dfa.c .......................... 7 KB
+  nfa.c .......................... 7 KB
+  main.c ......................... 5 KB
+  lexer.l ........................ 3 KB
+  parser.y ....................... 2 KB
+  converter.c .................... 1 KB
+  Headers ........................ 3 KB
+  ─────────────────────────────────────
+  TOTAL SOURCE CODE: ~28 KB
+
+Compiled:
+  dfa_converter.exe .............. 45 KB
+  obj/ files ..................... ~50 KB (temporary)
+  ─────────────────────────────────────
+  TOTAL COMPILED: ~95 KB
+
+Test Data:
+  tests/dfa_examples.txt ......... 2 KB
+
+Documentation:
+  All .md and .txt files ......... ~150 KB
+
+Total Project:
+  With source & docs ............. ~200 KB
+
+
+═══════════════════════════════════════════════════════════════════════════════
+FILES YOU CAN DELETE (SAFELY)
+═══════════════════════════════════════════════════════════════════════════════
+
+Safe to delete (can rebuild):
+  ✓ obj/ folder (entire directory)
+    └─ Reason: Auto-generated during build
+    └─ Recovery: Run: make clean && make
+
+  ✓ dfa_converter.exe
+    └─ Reason: Can rebuild from source
+    └─ Recovery: Run: make
+
+  ✓ lex.yy.c (if generated)
+    └─ Reason: Auto-generated from lexer.l
+    └─ Recovery: Run: make
+
+  ✓ parser.tab.c (if generated)
+    └─ Reason: Auto-generated from parser.y
+    └─ Recovery: Run: make
+
+NOT SAFE TO DELETE (needed):
+  ✗ All src/*.c and src/*.h files
+  ✗ lexer.l and parser.y (source specs)
+  ✗ tests/dfa_examples.txt
+  ✗ Makefile
+
+Documentation (nice to keep):
+  ? *.md and *.txt files
+    └─ Can delete if not needed, but lose info
+
+
+═══════════════════════════════════════════════════════════════════════════════
+DEPENDENCIES
+═══════════════════════════════════════════════════════════════════════════════
+
+To Run:
+  dfa_converter.exe
+    ↓
+  tests/dfa_examples.txt
+
+To Build:
+  Makefile
+    ↓
+  ├─→ src/dfa.h, src/dfa.c
+  ├─→ src/nfa.h, src/nfa.c
+  ├─→ src/converter.h, src/converter.c
+  ├─→ src/lexer.l (Flex)
+  ├─→ src/parser.y (Bison)
+  ├─→ src/main.c
+  ├─→ src/tokens.h
+  └─→ Tools: gcc, flex, bison, make
+
+To Compile:
+  dfa.c includes dfa.h
+  nfa.c includes nfa.h
+  converter.c includes converter.h, dfa.h, nfa.h
+  main.c includes all headers
+  parser.y includes tokens.h
+
+
+═══════════════════════════════════════════════════════════════════════════════
+COMMONLY NEEDED FILES
+═══════════════════════════════════════════════════════════════════════════════
+
+If you want to:              Then use:
+────────────────────────────────────────────────────────────────────
+Run the program              dfa_converter.exe + tests/
+Build from source            Makefile + all src/
+Understand DFA               dfa.h + dfa.c + README
+Understand NFA               nfa.h + nfa.c
+Understand parsing           lexer.l + parser.y + tokens.h
+Understand conversion        converter.c
+See how it runs              main.c
+Add test cases               tests/dfa_examples.txt
+Debug issues                 All src/ + documentation
+Deploy elsewhere             dfa_converter.exe + tests/
+Submit to professor          All src/ + tests/ + Makefile + docs
+Modify the code              Any src/ file + rebuild
+
+
+═══════════════════════════════════════════════════════════════════════════════
+FILES AT A GLANCE
+═══════════════════════════════════════════════════════════════════════════════
+
+src/dfa.h
+├─ Defines: DFA struct, capacity tracking
+├─ Exports: create_dfa(), add_state(), add_symbol(), add_transition()
+├─ Needed by: dfa.c, main.c, converter.c
+└─ Size: 1 KB
+
+src/dfa.c
+├─ Implements: All DFA functions
+├─ Includes: string interning, dynamic allocation
+├─ Calls: malloc, realloc, free, strcmp, strcpy
+└─ Size: 7 KB
+
+src/nfa.h
+├─ Defines: NFA struct, NFATransition with multi-targets
+├─ Exports: create_nfa(), add_nfa_state(), add_nfa_transition()
+├─ Needed by: nfa.c, main.c, converter.c
+└─ Size: 1.5 KB
+
+src/nfa.c
+├─ Implements: All NFA functions with proper cleanup
+├─ Includes: dynamic arrays for transition targets
+├─ Calls: Free routine that handles all allocations
+└─ Size: 7 KB
+
+src/lexer.l
+├─ Defines: Token patterns using regex
+├─ Recognizes: Keywords (states, alphabet, etc.), symbols, identifiers
+├─ Generates: lex.yy.c (tokenizer)
+└─ Size: 3 KB
+
+src/parser.y
+├─ Defines: Grammar rules for DFA spec
+├─ Actions: Call add_state(), add_symbol() while parsing
+├─ Generates: parser.tab.c, parser.tab.h
+└─ Size: 2 KB
+
+src/converter.h
+├─ Interface: NFA* convert_dfa_to_nfa(DFA*);
+├─ Purpose: Declares conversion function
+└─ Size: 0.5 KB
+
+src/converter.c
+├─ Logic: 1:1 mapping of DFA to NFA
+├─ Steps: Copy states → symbols → initial → finals → transitions
+└─ Size: 1 KB
+
+src/main.c
+├─ Features: Load examples, menu, user input, parse, convert, display
+├─ Calls: All module functions
+├─ I/O: File loading, buffered I/O
+└─ Size: 5 KB
+
+tests/dfa_examples.txt
+├─ Contains: 10 DFA examples in spec format
+├─ Format: DFA { states: ... }
+├─ Used by: main.c at startup
+└─ Size: 2 KB
+
+Makefile
+├─ Targets: all, clean, run
+├─ Commands: Flex, Bison, GCC, LD
+├─ Creates: dfa_converter.exe
+└─ Size: 1 KB
+
+
+═══════════════════════════════════════════════════════════════════════════════
+MINIMAL PACKAGE FOR DIFFERENT PURPOSES
+═══════════════════════════════════════════════════════════════════════════════
+
+MINIMAL TO RUN (2 files, 47 KB):
+  ├─ dfa_converter.exe (45 KB)
+  └─ tests/dfa_examples.txt (2 KB)
+
+MINIMAL TO BUILD (14 files, 30 KB):
+  ├─ All 9 src files (28 KB)
+  └─ Makefile (1 KB)
+  + Build tools: gcc, flex, bison, make
+
+MINIMAL TO UNDERSTAND (10 files, 32 KB):
+  ├─ All 9 src files (28 KB)
+  └─ README.md (4 KB)
+
+MINIMAL TO SUBMIT (13 files, 35 KB):
+  ├─ All 9 src files (28 KB)
+  ├─ Makefile (1 KB)
+  ├─ tests/dfa_examples.txt (2 KB)
+  └─ README.md (4 KB)
+
+
+═══════════════════════════════════════════════════════════════════════════════
+
+That's it! Now you know exactly which files do what.
+
+═══════════════════════════════════════════════════════════════════════════════
+

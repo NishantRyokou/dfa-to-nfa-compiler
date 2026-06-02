@@ -1,0 +1,381 @@
+═══════════════════════════════════════════════════════════════════════════════
+                    HOW TO CREATE MS WORD SUBMISSION
+═══════════════════════════════════════════════════════════════════════════════
+
+QUICK STEPS:
+1. Open MS Word (blank document)
+2. Copy content from MS_WORD_SUBMISSION_TEMPLATE.txt
+3. Add code listings from source files
+4. Format and submit
+
+═══════════════════════════════════════════════════════════════════════════════
+DETAILED INSTRUCTIONS
+═══════════════════════════════════════════════════════════════════════════════
+
+STEP 1: OPEN MS WORD
+──────────────────────────────────────────────────────────────────────────────
+1. Click Start Menu
+2. Type "Word" and open Microsoft Word
+3. Create new blank document
+4. Press Ctrl+N for new document
+
+
+STEP 2: SET UP DOCUMENT FORMATTING
+──────────────────────────────────────────────────────────────────────────────
+1. Change font to "Calibri" or "Arial" for main text
+2. Go to Layout → Margins → Set to 1" all sides
+3. Go to Layout → Orientation → Portrait (default)
+
+
+STEP 3: ADD COVER PAGE
+──────────────────────────────────────────────────────────────────────────────
+1. Type the cover page information:
+   
+   ASSIGNMENT SUBMISSION
+   DFA to NFA COMPILER using FLEX and BISON
+   
+   Subject: Compiler Design / Theory of Computation
+   Date: June 2, 2026
+   
+   Student Name: [YOUR NAME]
+   Roll No: [YOUR ROLL NO]
+   Class: [YOUR CLASS]
+
+2. Center this text:
+   - Select all cover page text (Ctrl+A for first page)
+   - Click Home → Center
+
+3. Press Ctrl+Enter to add page break
+
+
+STEP 4: COPY MAIN CONTENT
+──────────────────────────────────────────────────────────────────────────────
+1. Open file: MS_WORD_SUBMISSION_TEMPLATE.txt
+   (Located in your project folder)
+
+2. Select ALL content (Ctrl+A)
+
+3. Copy (Ctrl+C)
+
+4. Go back to Word document
+
+5. Click after cover page
+
+6. Paste (Ctrl+V)
+
+7. Word will auto-format the text
+
+
+STEP 5: ADD CODE LISTINGS
+──────────────────────────────────────────────────────────────────────────────
+For each code file, add a new page:
+
+1. Press Ctrl+Enter (new page)
+
+2. Type heading: "A.1 dfa.h"
+
+3. Open: src/dfa.h
+
+4. Select all code (Ctrl+A)
+
+5. Copy (Ctrl+C)
+
+6. Go back to Word
+
+7. Paste (Ctrl+V)
+
+8. Select all pasted code
+
+9. Change format:
+   - Font: Courier New
+   - Size: 9pt
+   - Highlight one code section at a time
+
+10. Repeat for each file:
+    - src/dfa.h
+    - src/dfa.c
+    - src/nfa.h
+    - src/nfa.c
+    - src/lexer.l
+    - src/parser.y
+    - src/converter.c
+    - src/main.c
+    - tests/dfa_examples.txt
+
+
+STEP 6: ADD TABLE OF CONTENTS (Optional but recommended)
+──────────────────────────────────────────────────────────────────────────────
+1. Press Ctrl+Home (go to beginning)
+
+2. After cover page, press Ctrl+Enter
+
+3. Type "TABLE OF CONTENTS"
+
+4. Go to References → Table of Contents → Choose a style
+
+5. Word auto-generates TOC from your headings
+
+
+STEP 7: ADD PAGE NUMBERS
+──────────────────────────────────────────────────────────────────────────────
+1. Go to Insert → Page Numbers
+
+2. Choose position: Bottom Center
+
+3. Format: Number (1, 2, 3...)
+
+4. Check "Different first page" (for no number on cover page)
+
+
+STEP 8: REVIEW AND EDIT
+──────────────────────────────────────────────────────────────────────────────
+1. Go through document
+
+2. Fix any formatting issues:
+   - Replace [YOUR NAME] with actual name
+   - Replace [YOUR ROLL NO] with actual roll number
+   - Replace [YOUR CLASS] with actual class
+
+3. Check page breaks (especially before code sections)
+
+4. Verify all headings are formatted as headings
+
+
+STEP 9: ADD FOOTER WITH DETAILS
+──────────────────────────────────────────────────────────────────────────────
+1. Double-click at bottom of page
+
+2. Type: "Assignment Submission | Compiler Design | June 2026"
+
+3. Click "Close Header and Footer" or press Escape
+
+
+STEP 10: SAVE AND PRINT
+──────────────────────────────────────────────────────────────────────────────
+1. Press Ctrl+S to save
+
+2. Name: "Assignment_Compiler_Design_[YourName]"
+
+3. Format: .docx (default)
+
+4. Location: Save in your project folder
+
+5. To print:
+   - Press Ctrl+P
+   - Choose printer
+   - Number of copies: 1
+   - Click Print
+
+
+═══════════════════════════════════════════════════════════════════════════════
+CONTENT CHECKLIST
+═══════════════════════════════════════════════════════════════════════════════
+
+MUST HAVE:
+□ Cover page with student info
+□ Executive Summary
+□ Objective and Goals
+□ Theory and Background
+□ System Architecture
+□ Implementation Details
+□ Code Structure
+□ Optimization Techniques
+□ Test Results
+□ Performance Analysis
+□ Conclusion
+□ Code Listings (Appendix)
+
+FORMATTING REQUIREMENTS:
+□ Page numbers
+□ Proper margins (1" all sides)
+□ Professional fonts
+□ Code in monospace (Courier New)
+□ Clear section headings
+□ Proper spacing
+
+
+═══════════════════════════════════════════════════════════════════════════════
+DOCUMENT STATISTICS
+═══════════════════════════════════════════════════════════════════════════════
+
+Expected:
+- Pages: 15-25 (depending on code listings included)
+- Words: 3000-5000 (without code)
+- Words with code: 6000-10000
+- Sections: 11 main sections
+- Code files: 9 files included
+
+
+═══════════════════════════════════════════════════════════════════════════════
+COMMON FORMATTING IN WORD
+═══════════════════════════════════════════════════════════════════════════════
+
+MAKE TEXT BOLD:
+- Select text → Press Ctrl+B
+- Or click Bold button in toolbar
+
+MAKE TEXT ITALIC:
+- Select text → Press Ctrl+I
+- Or click Italic button in toolbar
+
+CREATE HEADING:
+- Select text
+- Home → Styles → Heading 1 (for main sections)
+- Or Heading 2 (for subsections)
+
+CREATE TABLE:
+- Insert → Table
+- Choose rows and columns
+- Type content
+
+CREATE NUMBERED LIST:
+- Home → Numbering → Choose style
+- Type items (press Enter for next)
+
+CREATE BULLET LIST:
+- Home → Bullets → Choose style
+- Type items (press Enter for next)
+
+INSERT PAGE BREAK:
+- Press Ctrl+Enter
+- Or Insert → Page Break
+
+
+═══════════════════════════════════════════════════════════════════════════════
+TIPS FOR PROFESSIONAL APPEARANCE
+═══════════════════════════════════════════════════════════════════════════════
+
+1. USE CONSISTENT FORMATTING
+   - Same font for all body text
+   - Same font for all code
+   - Same font size for similar content
+
+2. USE HEADINGS PROPERLY
+   - Heading 1 for main sections (1, 2, 3...)
+   - Heading 2 for subsections (1.1, 1.2...)
+   - Heading 3 for subsubsections (1.1.1, 1.1.2...)
+
+3. ADD SPACING
+   - Space between sections
+   - Space between paragraphs
+   - Space around code blocks
+
+4. USE TABLES FOR DATA
+   - Performance metrics
+   - Comparison tables
+   - Test results
+
+5. ADD IMAGES (Optional)
+   - Architecture diagram
+   - File structure tree
+   - Performance graphs
+
+6. USE BORDERS AND SHADING
+   - Box around important text
+   - Different color for code sections
+   - Highlight boxes for key points
+
+
+═══════════════════════════════════════════════════════════════════════════════
+WHAT TO INCLUDE IN EACH SECTION
+═══════════════════════════════════════════════════════════════════════════════
+
+1. EXECUTIVE SUMMARY (½ page)
+   - What the project is about
+   - Key achievements
+   - Brief overview
+
+2. OBJECTIVE (½ page)
+   - Why this assignment
+   - Learning goals
+   - What students should learn
+
+3. THEORY (1-2 pages)
+   - DFA definition
+   - NFA definition
+   - Conversion algorithm
+   - Compiler phases
+
+4. ARCHITECTURE (1 page)
+   - Diagram of system flow
+   - Data flow
+   - Module descriptions
+
+5. IMPLEMENTATION (2-3 pages)
+   - Code structure
+   - Key functions
+   - Data structures
+   - How it works
+
+6. OPTIMIZATION (1-2 pages)
+   - Before/after comparison
+   - Techniques used
+   - Results and benefits
+
+7. TESTING (1 page)
+   - Test cases
+   - Results
+   - Verification
+
+8. PERFORMANCE (1 page)
+   - Memory usage
+   - Speed improvements
+   - Scalability
+
+9. CONCLUSION (½ page)
+   - Summary
+   - What learned
+   - Future work
+
+10. APPENDIX (3-10 pages)
+    - Source code listings
+    - Test data
+    - Build instructions
+
+
+═══════════════════════════════════════════════════════════════════════════════
+FILE LOCATIONS TO COPY FROM
+═══════════════════════════════════════════════════════════════════════════════
+
+Main content:
+  C:\Users\legam\Documents\btech\assignment\toc\MS_WORD_SUBMISSION_TEMPLATE.txt
+
+Code files to include:
+  C:\Users\legam\Documents\btech\assignment\toc\src\dfa.h
+  C:\Users\legam\Documents\btech\assignment\toc\src\dfa.c
+  C:\Users\legam\Documents\btech\assignment\toc\src\nfa.h
+  C:\Users\legam\Documents\btech\assignment\toc\src\nfa.c
+  C:\Users\legam\Documents\btech\assignment\toc\src\lexer.l
+  C:\Users\legam\Documents\btech\assignment\toc\src\parser.y
+  C:\Users\legam\Documents\btech\assignment\toc\src\converter.c
+  C:\Users\legam\Documents\btech\assignment\toc\src\main.c
+  C:\Users\legam\Documents\btech\assignment\toc\tests\dfa_examples.txt
+
+
+═══════════════════════════════════════════════════════════════════════════════
+FINAL CHECKS BEFORE SUBMISSION
+═══════════════════════════════════════════════════════════════════════════════
+
+□ All student information filled in
+□ All sections present
+□ No spelling errors (Ctrl+F7 for spell check)
+□ No grammar errors
+□ All pages numbered
+□ Code formatted properly
+□ Page breaks look good
+□ Margins are correct
+□ Font is readable
+□ Images/diagrams included (if required)
+□ References are complete
+□ Document saved with good filename
+□ Ready to print/submit
+
+
+═══════════════════════════════════════════════════════════════════════════════
+
+ESTIMATED TIME: 30-45 minutes for complete document
+
+Questions? Refer to MS_WORD_SUBMISSION_TEMPLATE.txt for content
+
+═══════════════════════════════════════════════════════════════════════════════
+

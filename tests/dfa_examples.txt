@@ -1,0 +1,11 @@
+10
+DFA { states: q0, q1, q2, q3 alphabet: a, b initial: q0 finals: q3 }
+DFA { states: s0, s1, s2, s3 alphabet: 0, 1 initial: s0 finals: s3 }
+DFA { states: p0, p1, p2 alphabet: x, y initial: p0 finals: p2 }
+DFA { states: a0, a1, a2 alphabet: a initial: a0 finals: a2 }
+DFA { states: m0, m1, m2, m3, m4 alphabet: 0, 1, 2 initial: m0 finals: m4 }
+DFA { states: t0, t1, t2 alphabet: c, d, e initial: t0 finals: t2 }
+DFA { states: r0, r1, r2, r3 alphabet: i, j initial: r0 finals: r3 }
+DFA { states: n0, n1, n2, n3 alphabet: u, v, w initial: n0 finals: n3 }
+DFA { states: f0, f1, f2 alphabet: k initial: f0 finals: f2 }
+DFA { states: g0, g1, g2, g3, g4 alphabet: l, m initial: g0 finals: g4 }

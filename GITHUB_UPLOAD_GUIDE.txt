@@ -1,0 +1,453 @@
+═══════════════════════════════════════════════════════════════════════════════
+                    HOW TO UPLOAD TO GITHUB
+                     Step-by-Step Instructions
+═══════════════════════════════════════════════════════════════════════════════
+
+
+⚡ QUICK START:
+═══════════════════════════════════════════════════════════════════════════════
+
+1. Install Git: https://git-scm.com/download/win
+2. Create GitHub account: https://github.com/signup
+3. Create new repository on GitHub (name: dfa-to-nfa-compiler)
+4. Follow the steps below
+
+
+═══════════════════════════════════════════════════════════════════════════════
+STEP-BY-STEP INSTRUCTIONS
+═══════════════════════════════════════════════════════════════════════════════
+
+STEP 1: INSTALL GIT
+──────────────────────────────────────────────────────────────────────────────
+
+1. Go to: https://git-scm.com/download/win
+2. Click "Download for Windows"
+3. Run installer (accept all defaults)
+4. Restart your computer
+
+
+STEP 2: CONFIGURE GIT
+──────────────────────────────────────────────────────────────────────────────
+
+1. Open Command Prompt (Win+R, type "cmd", press Enter)
+
+2. Set your name:
+   git config --global user.name "Your Name"
+   
+   Example:
+   git config --global user.name "John Doe"
+
+3. Set your email:
+   git config --global user.email "your.email@gmail.com"
+   
+   Example:
+   git config --global user.email "john@example.com"
+
+4. Verify:
+   git config --global user.name
+   git config --global user.email
+
+
+STEP 3: CREATE GITHUB ACCOUNT & REPOSITORY
+──────────────────────────────────────────────────────────────────────────────
+
+1. Go to: https://github.com/signup
+2. Enter:
+   - Username: (e.g., legam2024)
+   - Email: (your email)
+   - Password: (create strong password)
+3. Click "Create account"
+4. Verify email address (check inbox)
+
+5. Once logged in, click "+" → "New repository"
+6. Repository name: dfa-to-nfa-compiler
+7. Description: DFA to NFA Compiler using Flex and Bison
+8. Choose: Public (so professor can see it)
+9. Check: "Add a README file" (optional)
+10. Click "Create repository"
+
+COPY THE REPOSITORY URL:
+  Look for the green "Code" button
+  Copy the HTTPS URL (looks like: https://github.com/yourname/dfa-to-nfa-compiler.git)
+
+
+STEP 4: INITIALIZE GIT IN YOUR PROJECT
+──────────────────────────────────────────────────────────────────────────────
+
+1. Open Command Prompt
+
+2. Navigate to project:
+   cd C:\Users\legam\Documents\btech\assignment\toc
+
+3. Initialize git:
+   git init
+
+4. Add all files:
+   git add .
+
+5. Create first commit:
+   git commit -m "Initial commit: DFA to NFA compiler with optimizations"
+
+6. Rename branch to main (if needed):
+   git branch -M main
+
+7. Add remote repository:
+   git remote add origin https://github.com/YOUR-USERNAME/dfa-to-nfa-compiler.git
+   
+   Replace: YOUR-USERNAME with your actual GitHub username
+
+8. Push to GitHub:
+   git push -u origin main
+
+9. Enter credentials:
+   Username: Your GitHub username
+   Password: Your GitHub personal access token (see note below)
+
+
+IMPORTANT: GITHUB PERSONAL ACCESS TOKEN
+──────────────────────────────────────────────────────────────────────────────
+
+GitHub no longer accepts passwords. You need a Personal Access Token:
+
+1. Go to: https://github.com/settings/tokens
+2. Click "Generate new token (classic)"
+3. Name: "Git CLI"
+4. Select scope: repo (check all repo options)
+5. Click "Generate token"
+6. COPY THE TOKEN (won't show again!)
+
+Use this token as your "password" when Git asks for it.
+
+
+═══════════════════════════════════════════════════════════════════════════════
+STEP 5: VERIFY UPLOAD
+═══════════════════════════════════════════════════════════════════════════════
+
+1. Go to: https://github.com/YOUR-USERNAME/dfa-to-nfa-compiler
+2. Verify all files are uploaded:
+   ✓ src/ folder with all .c, .h, .l, .y files
+   ✓ tests/ folder with examples
+   ✓ Makefile
+   ✓ README.md
+   ✓ All documentation files
+
+3. Check commit history:
+   Click "Commits" to see upload
+
+
+═══════════════════════════════════════════════════════════════════════════════
+WHAT FILES TO UPLOAD (IMPORTANT)
+═══════════════════════════════════════════════════════════════════════════════
+
+INCLUDE (Must upload):
+  ✓ src/ folder (all source code)
+  ✓ tests/ folder (test data)
+  ✓ Makefile (build config)
+  ✓ *.md files (documentation)
+  ✓ *.txt files (guides)
+  ✓ build.bat, build.ps1, build.sh (build scripts)
+
+EXCLUDE (Don't upload):
+  ✗ obj/ folder (auto-generated, too large)
+  ✗ dfa_converter.exe (binary, can be rebuilt)
+  ✗ *.o files (object files)
+  ✗ lex.yy.c, parser.tab.* (generated files)
+
+CREATE .gitignore FILE
+──────────────────────────────────────────────────────────────────────────────
+
+1. Create file: .gitignore in project root
+
+2. Add this content:
+
+# Build artifacts
+obj/
+*.o
+*.exe
+*.a
+*.so
+
+# Generated files
+lex.yy.c
+parser.tab.c
+parser.tab.h
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+
+═══════════════════════════════════════════════════════════════════════════════
+COMMAND REFERENCE
+═══════════════════════════════════════════════════════════════════════════════
+
+Check Git status:
+  git status
+
+Add all files:
+  git add .
+
+Add specific file:
+  git add filename.txt
+
+Commit:
+  git commit -m "Your message here"
+
+Push to GitHub:
+  git push
+
+Pull from GitHub:
+  git pull
+
+View commit history:
+  git log
+
+Create new branch:
+  git checkout -b branch-name
+
+Switch to branch:
+  git checkout branch-name
+
+
+═══════════════════════════════════════════════════════════════════════════════
+GITHUB README TEMPLATE
+═══════════════════════════════════════════════════════════════════════════════
+
+If you want to update your README.md with a professional description:
+
+# DFA to NFA Compiler
+
+A complete compiler implementation for converting Deterministic Finite Automata (DFA) to Non-deterministic Finite Automata (NFA) using Flex and Bison.
+
+## Features
+
+- **Lexical Analysis** using Flex
+- **Syntax Analysis** using Bison
+- **Dynamic Memory Allocation** with 99.9% memory savings
+- **String Interning** for efficient string handling
+- **Optimized I/O** with buffered file operations
+- **10 Test Examples** included
+- **Zero Memory Leaks**
+- **Interactive Menu System**
+
+## Quick Start
+
+### Prerequisites
+- MSYS2 with gcc, flex, bison, make installed
+- Or: Linux/Mac with standard build tools
+
+### Build
+```bash
+make clean && make
+```
+
+### Run
+```bash
+./dfa_converter
+```
+
+## Project Structure
+
+```
+toc/
+├── src/              # Source code
+│   ├── dfa.h/c      # DFA module (optimized)
+│   ├── nfa.h/c      # NFA module (optimized)
+│   ├── converter.h/c # Conversion algorithm
+│   ├── lexer.l       # Flex specification
+│   ├── parser.y      # Bison specification
+│   └── main.c        # Main program
+├── tests/            # Test data
+│   └── dfa_examples.txt
+├── Makefile          # Build configuration
+└── README.md         # This file
+```
+
+## Optimizations
+
+- Dynamic memory allocation (vs fixed arrays)
+- String interning (vs duplicate strings)
+- Buffered I/O (5-20x faster)
+- Proper memory cleanup
+
+See OPTIMIZATION_CHANGES.md for details.
+
+## Files to Submit
+
+- All 9 source files (src/)
+- Makefile
+- Test data (tests/)
+- Documentation (*.md files)
+
+## Author
+
+[Your Name]
+
+## License
+
+Academic Assignment - Compiler Design
+
+
+═══════════════════════════════════════════════════════════════════════════════
+COMMON ISSUES & SOLUTIONS
+═══════════════════════════════════════════════════════════════════════════════
+
+ISSUE: "fatal: not a git repository"
+SOLUTION:
+  You need to run: git init
+  From the project directory
+
+ISSUE: "remote origin already exists"
+SOLUTION:
+  Run: git remote remove origin
+  Then: git remote add origin [URL]
+
+ISSUE: "Permission denied" or "401 Unauthorized"
+SOLUTION:
+  Use Personal Access Token instead of password
+  Generate at: https://github.com/settings/tokens
+
+ISSUE: Files too large (>100 MB)
+SOLUTION:
+  Delete obj/ folder and *.o files first
+  Make sure .gitignore excludes them
+
+ISSUE: "error: failed to push"
+SOLUTION:
+  Pull first: git pull
+  Then push: git push
+
+ISSUE: Wrong files uploaded
+SOLUTION:
+  Create .gitignore file
+  Run: git rm -r --cached .
+  Run: git add .
+  Run: git commit -m "Remove unwanted files"
+  Run: git push
+
+
+═══════════════════════════════════════════════════════════════════════════════
+AFTER UPLOADING
+═══════════════════════════════════════════════════════════════════════════════
+
+SHARE WITH PROFESSOR:
+  Send: https://github.com/YOUR-USERNAME/dfa-to-nfa-compiler
+  
+FUTURE UPDATES:
+  Make changes locally
+  Run: git add .
+  Run: git commit -m "Description of changes"
+  Run: git push
+
+VIEW ONLINE:
+  Open: https://github.com/YOUR-USERNAME/dfa-to-nfa-compiler
+  Browse: All files and code
+  See: Commit history
+
+
+═══════════════════════════════════════════════════════════════════════════════
+GITHUB LINK EXAMPLES
+═══════════════════════════════════════════════════════════════════════════════
+
+Your repo will be at:
+  https://github.com/YOUR-USERNAME/dfa-to-nfa-compiler
+
+View specific file:
+  https://github.com/YOUR-USERNAME/dfa-to-nfa-compiler/blob/main/src/dfa.c
+
+View commit history:
+  https://github.com/YOUR-USERNAME/dfa-to-nfa-compiler/commits/main
+
+Clone the repo:
+  git clone https://github.com/YOUR-USERNAME/dfa-to-nfa-compiler.git
+
+
+═══════════════════════════════════════════════════════════════════════════════
+QUICK COMMANDS - COPY & PASTE
+═══════════════════════════════════════════════════════════════════════════════
+
+FIRST TIME UPLOAD (copy these commands in order):
+
+cd C:\Users\legam\Documents\btech\assignment\toc
+
+git init
+
+git add .
+
+git commit -m "Initial commit: DFA to NFA compiler with optimizations"
+
+git branch -M main
+
+git remote add origin https://github.com/YOUR-USERNAME/dfa-to-nfa-compiler.git
+
+git push -u origin main
+
+(Then enter username and personal access token when prompted)
+
+
+FUTURE UPDATES:
+
+git add .
+
+git commit -m "Update description"
+
+git push
+
+
+═══════════════════════════════════════════════════════════════════════════════
+CREATING .gitignore FILE
+═══════════════════════════════════════════════════════════════════════════════
+
+1. Open Command Prompt
+
+2. Navigate to project:
+   cd C:\Users\legam\Documents\btech\assignment\toc
+
+3. Create .gitignore:
+   echo # Build artifacts > .gitignore
+   echo obj/ >> .gitignore
+   echo *.o >> .gitignore
+   echo *.exe >> .gitignore
+   echo lex.yy.c >> .gitignore
+   echo parser.tab.c >> .gitignore
+   echo parser.tab.h >> .gitignore
+
+Or manually:
+1. Open Notepad
+2. Create new file
+3. Add content (see above)
+4. Save as ".gitignore" (with quotes)
+5. Save in project root folder
+
+
+═══════════════════════════════════════════════════════════════════════════════
+SUMMARY
+═══════════════════════════════════════════════════════════════════════════════
+
+1. ✓ Install Git
+2. ✓ Configure Git (user.name, user.email)
+3. ✓ Create GitHub account
+4. ✓ Create GitHub repository
+5. ✓ Get Personal Access Token
+6. ✓ Initialize Git locally
+7. ✓ Add and commit files
+8. ✓ Push to GitHub
+9. ✓ Verify upload
+10. ✓ Share link with professor
+
+That's it! Your project is now on GitHub!
+
+
+═══════════════════════════════════════════════════════════════════════════════
+
+Need help? Common issues section above has solutions.
+Questions? Check GitHub documentation: https://docs.github.com
+
+═══════════════════════════════════════════════════════════════════════════════
+
