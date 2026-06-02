@@ -1,252 +1,131 @@
 #include "converter.h"
 #include <string.h>
 
-/* ========================================================================
-   DFA to NFA Conversion (Simple - preserves determinism)
-   ======================================================================== */
-
+/* DFA to NFA: Simple copy */
 NFA* convert_dfa_to_nfa(DFA* dfa) {
     NFA* nfa = create_nfa();
+    int i;
     
-    for (int i = 0; i < dfa->num_states; i++) {
-        add_nfa_state(nfa, dfa->states[i].name);
-    }
-    
-    for (int i = 0; i < dfa->num_symbols; i++) {
-        add_nfa_symbol(nfa, dfa->alphabet[i].symbol);
+    for (i = 0; i < dfa->num_states; i++) add_nfa_state(nfa, dfa->states[i].name);
+    for (i = 0; i < dfa->num_symbols; i++) add_nfa_symbol(nfa, dfa->alphabet[i].symbol);
+    for (i = 0; i < dfa->num_final_states; i++) add_nfa_final_state(nfa, dfa->final_states[i].name);
+    for (i = 0; i < dfa->num_transitions; i++) {
+        add_nfa_transition(nfa, dfa->transitions[i].from.name, 
+                          dfa->transitions[i].symbol, dfa->transitions[i].to.name);
     }
     
     set_nfa_initial_state(nfa, dfa->initial_state.name);
-    
-    for (int i = 0; i < dfa->num_final_states; i++) {
-        add_nfa_final_state(nfa, dfa->final_states[i].name);
-    }
-    
-    for (int i = 0; i < dfa->num_transitions; i++) {
-        add_nfa_transition(nfa, 
-            dfa->transitions[i].from.name,
-            dfa->transitions[i].symbol,
-            dfa->transitions[i].to.name);
-    }
-    
     return nfa;
 }
 
-/* ========================================================================
-   NFA to DFA Conversion (Subset Construction / Powerset Algorithm)
-   ======================================================================== */
+/* NFA to DFA: Subset construction algorithm */
+#define MAX_SUBSETS 500
+#define SUBSET_NAME_SIZE 256
 
-#define MAX_SUBSET_STATES 1000
-#define MAX_STATE_NAME 256
-
-/* Represents a set of NFA states (becomes one DFA state) */
 typedef struct {
-    int* state_indices;     /* Array of NFA state indices in this subset */
-    int num_states;
-    char name[MAX_STATE_NAME];  /* Name like "{q0,q1,q2}" */
-} StateSubset;
+    int* states;
+    int count;
+    char name[SUBSET_NAME_SIZE];
+} Subset;
 
-/* Helper: Check if a state index is in the subset */
-static int subset_contains(StateSubset* subset, int state_idx) {
-    for (int i = 0; i < subset->num_states; i++) {
-        if (subset->state_indices[i] == state_idx) {
-            return 1;
-        }
-    }
+static int contains(Subset* s, int idx) {
+    for (int i = 0; i < s->count; i++) if (s->states[i] == idx) return 1;
     return 0;
 }
 
-/* Helper: Compare two subsets for equality */
-static int subsets_equal(StateSubset* s1, StateSubset* s2) {
-    if (s1->num_states != s2->num_states) return 0;
-    
-    /* Check if all states in s1 are in s2 */
-    for (int i = 0; i < s1->num_states; i++) {
-        if (!subset_contains(s2, s1->state_indices[i])) {
-            return 0;
-        }
-    }
+static int equals(Subset* a, Subset* b) {
+    if (a->count != b->count) return 0;
+    for (int i = 0; i < a->count; i++) if (!contains(b, a->states[i])) return 0;
     return 1;
 }
 
-/* Helper: Create name for subset like "{q0,q1}" */
-static void create_subset_name(StateSubset* subset, NFA* nfa) {
-    if (subset->num_states == 0) {
-        strcpy(subset->name, "{}");
-        return;
+static void make_name(Subset* s, NFA* nfa) {
+    if (!s->count) { strcpy(s->name, "{}"); return; }
+    strcpy(s->name, "{");
+    for (int i = 0; i < s->count; i++) {
+        if (i) strcat(s->name, ",");
+        strcat(s->name, nfa->states[s->states[i]].name);
     }
-    
-    subset->name[0] = '{';
-    subset->name[1] = '\0';
-    
-    for (int i = 0; i < subset->num_states; i++) {
-        if (i > 0) strcat(subset->name, ",");
-        strcat(subset->name, nfa->states[subset->state_indices[i]].name);
-    }
-    strcat(subset->name, "}");
+    strcat(s->name, "}");
 }
 
-/* Helper: Compute transition from subset on symbol */
-static void compute_move(NFA* nfa, StateSubset* from_subset, char symbol, StateSubset* result) {
-    result->num_states = 0;
-    
-    /* For each state in the from_subset */
-    for (int i = 0; i < from_subset->num_states; i++) {
-        int from_state = from_subset->state_indices[i];
-        
-        /* Find transitions from this state on this symbol */
+static void move(NFA* nfa, Subset* from, char sym, Subset* to) {
+    to->count = 0;
+    for (int i = 0; i < from->count; i++) {
         for (int t = 0; t < nfa->num_transitions; t++) {
-            /* Check if transition matches */
-            int trans_from = -1;
+            int f = -1;
             for (int s = 0; s < nfa->num_states; s++) {
-                if (strcmp(nfa->states[s].name, nfa->transitions[t].from.name) == 0) {
-                    trans_from = s;
-                    break;
-                }
+                if (!strcmp(nfa->states[s].name, nfa->transitions[t].from.name)) { f = s; break; }
             }
-            
-            if (trans_from == from_state && nfa->transitions[t].symbol == symbol) {
-                /* Add all target states to result */
+            if (f == from->states[i] && nfa->transitions[t].symbol == sym) {
                 for (int j = 0; j < nfa->transitions[t].num_to_states; j++) {
-                    int target = nfa->transitions[t].to_states[j];
-                    if (!subset_contains(result, target)) {
-                        result->state_indices[result->num_states++] = target;
-                    }
+                    int tgt = nfa->transitions[t].to_states[j];
+                    if (!contains(to, tgt)) to->states[to->count++] = tgt;
                 }
             }
         }
     }
-    
-    create_subset_name(result, nfa);
+    make_name(to, nfa);
 }
 
-/* Helper: Check if subset contains any final state */
-static int is_final_subset(NFA* nfa, StateSubset* subset) {
-    for (int i = 0; i < subset->num_states; i++) {
-        int state_idx = subset->state_indices[i];
-        const char* state_name = nfa->states[state_idx].name;
-        
-        /* Check if this state is final in NFA */
+static int is_final(NFA* nfa, Subset* s) {
+    for (int i = 0; i < s->count; i++) {
         for (int f = 0; f < nfa->num_final_states; f++) {
-            if (strcmp(state_name, nfa->final_states[f].name) == 0) {
-                return 1;
-            }
+            if (!strcmp(nfa->states[s->states[i]].name, nfa->final_states[f].name)) return 1;
         }
     }
     return 0;
 }
 
-/* Main conversion function: NFA to DFA using subset construction */
 DFA* convert_nfa_to_dfa(NFA* nfa) {
     if (!nfa) return NULL;
-    
     DFA* dfa = create_dfa();
+    int i, init = -1;
     
-    /* Copy alphabet */
-    for (int i = 0; i < nfa->num_symbols; i++) {
-        add_symbol(dfa, nfa->alphabet[i].symbol);
+    for (i = 0; i < nfa->num_symbols; i++) add_symbol(dfa, nfa->alphabet[i].symbol);
+    for (i = 0; i < nfa->num_states; i++) {
+        if (!strcmp(nfa->states[i].name, nfa->initial_state.name)) { init = i; break; }
     }
+    if (init == -1) return dfa;
     
-    /* Array of subsets (DFA states) */
-    StateSubset* subsets = malloc(MAX_SUBSET_STATES * sizeof(StateSubset));
-    for (int i = 0; i < MAX_SUBSET_STATES; i++) {
-        subsets[i].state_indices = malloc(nfa->num_states * sizeof(int));
-    }
-    int num_subsets = 0;
+    Subset* subs = malloc(MAX_SUBSETS * sizeof(Subset));
+    for (i = 0; i < MAX_SUBSETS; i++) subs[i].states = malloc(nfa->num_states * sizeof(int));
     
-    /* Start with initial state subset {q0} */
-    int initial_idx = -1;
-    for (int i = 0; i < nfa->num_states; i++) {
-        if (strcmp(nfa->states[i].name, nfa->initial_state.name) == 0) {
-            initial_idx = i;
-            break;
-        }
-    }
+    subs[0].count = 1;
+    subs[0].states[0] = init;
+    make_name(&subs[0], nfa);
+    int n = 1, p = 0;
     
-    if (initial_idx == -1) {
-        /* Cleanup and return */
-        for (int i = 0; i < MAX_SUBSET_STATES; i++) {
-            free(subsets[i].state_indices);
-        }
-        free(subsets);
-        return dfa;
-    }
+    add_state(dfa, subs[0].name);
+    set_initial_state(dfa, subs[0].name);
+    if (is_final(nfa, &subs[0])) add_final_state(dfa, subs[0].name);
     
-    /* Create initial subset */
-    subsets[0].num_states = 1;
-    subsets[0].state_indices[0] = initial_idx;
-    create_subset_name(&subsets[0], nfa);
-    num_subsets = 1;
-    
-    add_state(dfa, subsets[0].name);
-    set_initial_state(dfa, subsets[0].name);
-    
-    if (is_final_subset(nfa, &subsets[0])) {
-        add_final_state(dfa, subsets[0].name);
-    }
-    
-    /* Process each subset */
-    int processed = 0;
-    while (processed < num_subsets) {
-        StateSubset* current = &subsets[processed];
-        
-        /* For each symbol in alphabet */
+    while (p < n) {
         for (int sym = 0; sym < nfa->num_symbols; sym++) {
-            char symbol = nfa->alphabet[sym].symbol;
+            Subset res;
+            res.states = malloc(nfa->num_states * sizeof(int));
+            move(nfa, &subs[p], nfa->alphabet[sym].symbol, &res);
             
-            /* Compute move(current, symbol) */
-            StateSubset result;
-            result.state_indices = malloc(nfa->num_states * sizeof(int));
-            compute_move(nfa, current, symbol, &result);
-            
-            if (result.num_states > 0) {
-                /* Check if this subset already exists */
-                int found_idx = -1;
-                for (int i = 0; i < num_subsets; i++) {
-                    if (subsets_equal(&result, &subsets[i])) {
-                        found_idx = i;
-                        break;
-                    }
-                }
+            if (res.count) {
+                int found = -1;
+                for (i = 0; i < n; i++) if (equals(&res, &subs[i])) { found = i; break; }
                 
-                /* If new subset, add it */
-                if (found_idx == -1) {
-                    if (num_subsets < MAX_SUBSET_STATES) {
-                        /* Copy result to subsets array */
-                        subsets[num_subsets].num_states = result.num_states;
-                        for (int i = 0; i < result.num_states; i++) {
-                            subsets[num_subsets].state_indices[i] = result.state_indices[i];
-                        }
-                        strcpy(subsets[num_subsets].name, result.name);
-                        
-                        add_state(dfa, subsets[num_subsets].name);
-                        
-                        if (is_final_subset(nfa, &subsets[num_subsets])) {
-                            add_final_state(dfa, subsets[num_subsets].name);
-                        }
-                        
-                        found_idx = num_subsets;
-                        num_subsets++;
-                    }
+                if (found == -1 && n < MAX_SUBSETS) {
+                    subs[n].count = res.count;
+                    for (i = 0; i < res.count; i++) subs[n].states[i] = res.states[i];
+                    strcpy(subs[n].name, res.name);
+                    add_state(dfa, subs[n].name);
+                    if (is_final(nfa, &subs[n])) add_final_state(dfa, subs[n].name);
+                    found = n++;
                 }
-                
-                /* Add transition */
-                if (found_idx != -1) {
-                    add_transition(dfa, current->name, symbol, subsets[found_idx].name);
-                }
+                if (found != -1) add_transition(dfa, subs[p].name, nfa->alphabet[sym].symbol, subs[found].name);
             }
-            
-            free(result.state_indices);
+            free(res.states);
         }
-        
-        processed++;
+        p++;
     }
     
-    /* Cleanup */
-    for (int i = 0; i < MAX_SUBSET_STATES; i++) {
-        free(subsets[i].state_indices);
-    }
-    free(subsets);
-    
+    for (i = 0; i < MAX_SUBSETS; i++) free(subs[i].states);
+    free(subs);
     return dfa;
 }
