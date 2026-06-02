@@ -15,6 +15,7 @@ IDENTIFIER  {LETTER}({LETTER}|{DIGIT})*
 %%
 
 "DFA"                   { return DFA_KW; }
+"NFA"                   { return NFA_KW; }
 "states"                { return STATES_KW; }
 "alphabet"              { return ALPHABET_KW; }
 "initial"               { return INITIAL_KW; }

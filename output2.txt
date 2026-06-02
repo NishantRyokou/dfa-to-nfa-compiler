@@ -1,0 +1,77 @@
+ΓòöΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòù
+Γòæ      DFA to NFA Converter              Γòæ
+Γòæ      Using Flex and Bison              Γòæ
+ΓòÜΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓò¥
+
+Successfully loaded 10 DFA examples.
+
+========================================
+Available DFA Examples:
+========================================
+
+[1] DFA { states: q0, q1, q2 alphabet: a, b initial: q0 finals: q2 transitions: q0 -- a -> q1 q1 -- b -> q2 }
+
+[2] DFA { states: s0, s1, s2, s3 alphabet: 0, 1 initial: s0 finals: s3 transitions: s0 -- 0 -> s1 s1 -- 1 -> s2 s2 -- 0 -> s3 }
+
+[3] DFA { states: p0, p1, p2 alphabet: x, y initial: p0 finals: p2 transitions: p0 -- x -> p1 p1 -- y -> p2 p2 -- x -> p0 }
+
+[4] DFA { states: a0, a1, a2, a3, a4, a5 alphabet: a initial: a0 finals: a2, a5 transitions: a0 -- a -> a1 a1 -- a -> a2 a2 -- a -> a3 a3 -- a -> a4 a4 -- a -> a5 a5 -- a -> a0 }
+
+[5] DFA { states: m0, m1, m2, m3, m4, m5, m6 alphabet: 0, 1, 2 initial: m0 finals: m3, m6 transitions: m0 -- 0 -> m1 m0 -- 1 -> m2 m1 -- 0 -> m3 m1 -- 1 -> m4 m2 -- 2 -> m5 m3 -- 0 -> m3 m4 -- 1 -> m6 m5 -- 2 -> m0 }
+
+[6] DFA { states: t0, t1, t2, t3, t4 alphabet: c, d, e initial: t0 finals: t1, t3 transitions: t0 -- c -> t1 t0 -- d -> t2 t0 -- e -> t3 t1 -- c -> t1 t1 -- d -> t2 t2 -- c -> t3 t2 -- d -> t2 t2 -- e -> t0 t3 -- c -> t3 }
+
+[7] DFA { states: r0, r1, r2, r3, r4, r5 alphabet: i, j initial: r0 finals: r2, r5 transitions: r0 -- i -> r1 r0 -- j -> r0 r1 -- i -> r2 r1 -- j -> r3 r2 -- i -> r2 r3 -- i -> r5 r3 -- j -> r0 r5 -- i -> r5 }
+
+[8] DFA { states: n0, n1, n2, n3, n4, n5, n6 alphabet: u, v, w initial: n0 finals: n2, n4, n6 transitions: n0 -- u -> n1 n0 -- v -> n2 n0 -- w -> n3 n1 -- u -> n2 n1 -- v -> n4 n2 -- u -> n2 n2 -- w -> n6 n3 -- u -> n4 n4 -- u -> n4 n6 -- v -> n1 }
+
+[9] DFA { states: f0, f1, f2, f3, f4, f5, f6, f7 alphabet: k initial: f0 finals: f3, f7 transitions: f0 -- k -> f1 f1 -- k -> f2 f2 -- k -> f3 f3 -- k -> f4 f4 -- k -> f5 f5 -- k -> f6 f6 -- k -> f7 f7 -- k -> f0 }
+
+[10] DFA { states: g0, g1, g2, g3, g4, g5, g6 alphabet: l, m initial: g0 finals: g3, g5 transitions: g0 -- l -> g1 g0 -- m -> g2 g1 -- l -> g3 g1 -- m -> g4 g2 -- l -> g4 g2 -- m -> g5 g3 -- l -> g3 g5 -- m -> g6 }
+
+Enter the number of the DFA example to convert (1-10): 
+========================================
+Converting Example 5
+========================================
+
+DFA parsed successfully
+
+>>> INPUT DFA <<<
+=== DFA ===
+States: m0 m1 m2 m3 m4 m5 m6 
+Alphabet: 0 1 2 
+Initial State: m0
+Final States: m3 m6 
+Transitions:
+  m0 --(0)--> m1
+  m0 --(1)--> m2
+  m1 --(0)--> m3
+  m1 --(1)--> m4
+  m2 --(2)--> m5
+  m3 --(0)--> m3
+  m4 --(1)--> m6
+  m5 --(2)--> m0
+
+
+>>> CONVERTED NFA <<<
+=== NFA ===
+States: m0 m1 m2 m3 m4 m5 m6 
+Alphabet: 0 1 2 
+Initial State: m0
+Final States: m3 m6 
+Transitions:
+  m0 --(0)--> m1
+  m0 --(1)--> m2
+  m1 --(0)--> m3
+  m1 --(1)--> m4
+  m2 --(2)--> m5
+  m3 --(0)--> m3
+  m4 --(1)--> m6
+  m5 --(2)--> m0
+
+========================================
+Conversion Complete!
+========================================
+
+'cat' is not recognized as an internal or external command,
+operable program or batch file.

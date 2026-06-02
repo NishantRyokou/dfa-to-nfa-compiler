@@ -6,6 +6,7 @@
 #include "converter.h"
 
 extern DFA* current_dfa;
+extern NFA* current_nfa;
 extern FILE* yyin;
 extern int yyparse();
 
@@ -105,12 +106,42 @@ void display_examples() {
 
 int main(int argc, char* argv[]) {
     printf("╔════════════════════════════════════════╗\n");
-    printf("║      DFA to NFA Converter              ║\n");
+    printf("║   DFA ↔ NFA Bidirectional Converter   ║\n");
     printf("║      Using Flex and Bison              ║\n");
     printf("╚════════════════════════════════════════╝\n\n");
     
-    /* Load examples from file */
-    const char* examples_file = "tests/dfa_examples.txt";
+    /* Select conversion mode */
+    int mode;
+    while (1) {
+        printf("Select Conversion Mode:\n");
+        printf("  [1] DFA to NFA (Simple Conversion)\n");
+        printf("  [2] NFA to DFA (Subset Construction Algorithm)\n");
+        printf("\nEnter your choice (1-2): ");
+        fflush(stdout);
+        
+        if (scanf("%d", &mode) != 1) {
+            fprintf(stderr, "Invalid input. Please enter 1 or 2.\n");
+            while (getchar() != '\n');
+            continue;
+        }
+        
+        if (mode < 1 || mode > 2) {
+            fprintf(stderr, "Invalid choice. Please enter 1 or 2.\n");
+            continue;
+        }
+        
+        break;
+    }
+    printf("\n");
+    
+    /* Load examples based on mode */
+    const char* examples_file;
+    if (mode == 1) {
+        examples_file = "tests/dfa_examples.txt";
+    } else {
+        examples_file = "tests/nfa_examples.txt";
+    }
+    
     int loaded = load_examples(examples_file);
     
     if (loaded == 0) {
@@ -118,7 +149,7 @@ int main(int argc, char* argv[]) {
         return 1;
     }
     
-    printf("Successfully loaded %d DFA examples.\n", loaded);
+    printf("Successfully loaded %d examples.\n", loaded);
     
     /* Display examples */
     display_examples();
@@ -126,7 +157,8 @@ int main(int argc, char* argv[]) {
     /* Get user selection */
     int choice;
     while (1) {
-        printf("Enter the number of the DFA example to convert (1-%d): ", num_examples);
+        const char* input_type = (mode == 1) ? "DFA" : "NFA";
+        printf("Enter the number of the %s example to convert (1-%d): ", input_type, num_examples);
         fflush(stdout);
         
         if (scanf("%d", &choice) != 1) {
@@ -147,27 +179,23 @@ int main(int argc, char* argv[]) {
     printf("Converting Example %d\n", choice);
     printf("========================================\n\n");
     
-    /* Create DFA for conversion */
-    current_dfa = create_dfa();
-    
-    /* Create temporary file for parsing - use binary mode for efficiency */
-    FILE* temp_file = fopen("dfa_input.tmp", "w");
+    /* Create temporary file for parsing */
+    const char* temp_file_name = (mode == 1) ? "dfa_input.tmp" : "nfa_input.tmp";
+    FILE* temp_file = fopen(temp_file_name, "w");
     if (!temp_file) {
         fprintf(stderr, "Error: Could not create temporary file\n");
-        free_dfa(current_dfa);
         cleanup_examples();
         return 1;
     }
     
-    /* Write selected DFA spec to temp file */
+    /* Write selected spec to temp file */
     fprintf(temp_file, "%s\n", examples[choice - 1].dfa_spec);
     fclose(temp_file);
     
     /* Read from temp file with buffering */
-    FILE* read_file = fopen("dfa_input.tmp", "r");
+    FILE* read_file = fopen(temp_file_name, "r");
     if (!read_file) {
         fprintf(stderr, "Error: Could not read temporary file\n");
-        free_dfa(current_dfa);
         cleanup_examples();
         return 1;
     }
@@ -178,35 +206,69 @@ int main(int argc, char* argv[]) {
     
     yyin = read_file;
     
-    if (yyparse() != 0) {
-        fprintf(stderr, "Parsing failed\n");
+    if (mode == 1) {
+        /* DFA to NFA conversion */
+        current_dfa = create_dfa();
+        
+        if (yyparse() != 0) {
+            fprintf(stderr, "Parsing failed\n");
+            fclose(read_file);
+            free_dfa(current_dfa);
+            cleanup_examples();
+            remove(temp_file_name);
+            return 1;
+        }
+        
         fclose(read_file);
+        
+        printf("\n>>> INPUT DFA <<<\n");
+        print_dfa(current_dfa);
+        
+        printf("\n\n>>> CONVERTED NFA <<<\n");
+        NFA* nfa = convert_dfa_to_nfa(current_dfa);
+        print_nfa(nfa);
+        
+        /* Cleanup */
         free_dfa(current_dfa);
-        cleanup_examples();
-        remove("dfa_input.tmp");
-        return 1;
+        free_nfa(nfa);
+        
+    } else {
+        /* NFA to DFA conversion */
+        current_nfa = create_nfa();
+        
+        if (yyparse() != 0) {
+            fprintf(stderr, "Parsing failed\n");
+            fclose(read_file);
+            free_nfa(current_nfa);
+            cleanup_examples();
+            remove(temp_file_name);
+            return 1;
+        }
+        
+        fclose(read_file);
+        
+        printf("\n>>> INPUT NFA <<<\n");
+        print_nfa(current_nfa);
+        
+        printf("\n\n>>> CONVERTED DFA (using Subset Construction) <<<\n");
+        DFA* dfa = convert_nfa_to_dfa(current_nfa);
+        print_dfa(dfa);
+        
+        printf("\n--- Notice how multiple NFA states combine into single DFA states! ---\n");
+        
+        /* Cleanup */
+        free_nfa(current_nfa);
+        free_dfa(dfa);
     }
-    
-    fclose(read_file);
-    
-    printf("\n>>> INPUT DFA <<<\n");
-    print_dfa(current_dfa);
-    
-    printf("\n\n>>> CONVERTED NFA <<<\n");
-    NFA* nfa = convert_dfa_to_nfa(current_dfa);
-    print_nfa(nfa);
     
     printf("\n========================================\n");
     printf("Conversion Complete!\n");
     printf("========================================\n\n");
     
-    /* Cleanup */
-    free_dfa(current_dfa);
-    free_nfa(nfa);
     cleanup_examples();
     
     /* Remove temporary file */
-    remove("dfa_input.tmp");
+    remove(temp_file_name);
     
     return 0;
 }

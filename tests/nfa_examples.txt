@@ -1,0 +1,6 @@
+5
+NFA { states: q0, q1, q2, q3 alphabet: a, b initial: q0 finals: q3 transitions: q0 -- a -> q0 q0 -- a -> q1 q1 -- b -> q2 q2 -- b -> q3 }
+NFA { states: s0, s1, s2 alphabet: 0, 1 initial: s0 finals: s2 transitions: s0 -- 0 -> s0 s0 -- 0 -> s1 s0 -- 1 -> s0 s1 -- 1 -> s2 }
+NFA { states: p0, p1, p2, p3 alphabet: x, y initial: p0 finals: p2, p3 transitions: p0 -- x -> p0 p0 -- x -> p1 p0 -- y -> p0 p1 -- y -> p2 p1 -- y -> p3 }
+NFA { states: r0, r1, r2 alphabet: a initial: r0 finals: r2 transitions: r0 -- a -> r0 r0 -- a -> r1 r0 -- a -> r2 r1 -- a -> r2 }
+NFA { states: t0, t1, t2, t3, t4 alphabet: 0, 1 initial: t0 finals: t4 transitions: t0 -- 0 -> t0 t0 -- 1 -> t0 t0 -- 0 -> t1 t1 -- 1 -> t2 t2 -- 0 -> t3 t3 -- 1 -> t4 }
